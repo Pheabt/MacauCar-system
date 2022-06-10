@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>智能网联--海梁科技</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <!--<meta name="renderer" content="webkit">-->
+    <meta name="viewport" content="width=device-width, height=device-height,
+     initial-scale=1, minimum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="/static/bus/css/hailiang01/pageShow.css" th:href="@{/static/bus/css/hailiang01/pageShow.css}">
+    <link rel="stylesheet" href="/static/bus/css/bootstrap.min.css" th:href="@{/static/bus/css/bootstrap.min.css}">
+    <script type="text/javascript" src="/static/bus/js/jquery/jquery-3.3.1.min.js"
+            th:src="@{/static/bus/js/jquery/jquery-3.3.1.min.js}"></script>
+    <script type="text/javascript" src="/static/bus/js/verifyPage.js" th:src="@{/static/bus/js/verifyPage.js}"></script>
+
+
+</head>
+<body>
+<div style="width: 100%; height: 100%; background-color: #15171e;">
+    <div class="container-fluid">
+        <div class="col-md-12 headPart">
+            <!--108dd1-->
+            <div id="titleH" style="position: relative">
+                <img style="position: absolute; float: left; height: 110px; left: 0; z-index: 99"
+                     src="/static/img/Macau1-logo.png">
+                <div id="divh1">车路协同控制后台</div>
+            </div>
+
+            <div id="divh2">Cooperative Vehicle Infrastructure System Center</div>
+        </div>
+        <div class="col-md-6 brotherPart">
+            <div id="titleTopDiv" style="position: absolute; top: 0; z-index: 30; width: 100%;">
+                <div class="topTitleName" style="width: 33%;">累计行驶里程(Km)：</div>
+                <div class="topTitleName" style="width: 34%;">累计行驶时长(Hour)：</div>
+                <div class="topTitleName" style="width: 33%;">累计出车次数：</div>
+                <br>
+                <div id="centerTotalMileage" class="digitLcd topTitleNumber" style="width: 33%;">0</div>
+                <div id="centerTotalTime" class="digitLcd topTitleNumber" style="width: 34%;">0</div>
+                <div id="centerTotalTimes" class="digitLcd topTitleNumber" style="width: 33%;">0</div>
+            </div>
+            <div id="mapDiv" class="boxShadow"
+                 style="position: relative; width: 100%; height: 70%;">
+
+                <div id="aMap" style="width: 100%; height: 100%; z-index: 12; margin: auto"></div>
+                <div id="tipWarn"
+                     style="position: absolute; z-index: 99999; right: 20px; top: 100px; height: 100px;width: 100px;
+                     color: red; background-color: #00e6ff; display: block; border-width: 3px;  border-radius: 10px;
+                     font-size: x-large;  text-align: center;">
+                    交叉路口防碰撞预警！
+                </div>
+                <!--<div id="runningCarCount"-->
+                <!--style="z-index: 30; width: 16%; height: 50%; position: absolute; right: 0; bottom: 10px">-->
+                <!--</div>-->
+                <!--显示车编号的按钮，用于点击选中车辆-->
+                <div id="selectAreaDiv"
+                     style="z-index: 9999; width: 90%; height: 20px; position: absolute; bottom: 20px; right: 30px">
+                </div>
+            </div>
+            <div style="width: 100%; height: 28%; margin-top: 1%;">
+                <div id="totalDiv1" class="boxShadow"
+                     style="width: 55%; height: 100%; float: left; margin-right: 2%"></div>
+                <div id="totalDiv2" class="boxShadow" style="width: 43%; height: 100%; float: left"></div>
+            </div>
+        </div>
+        <div class="col-md-6 brotherPart">
+            <div class="boxShadow" style="width: 100%; height: 80%; margin-bottom: 0">
+                <div style="width: 50%; height: 100%; float: left">
+                    <div style="width: 100%;height: 50%; padding: 0; border-bottom: dashed 1px #4f558b">
+                        <div style="width: 50%; height: 100%; padding: 0;  float: left; position: relative">
+                            <!--<div id="direction_point"></div>-->
+                            <div id="direction_point_child"></div>
+                            <div class="heading_title_div">航向角：</div>
+                            <div id="heading_number" class="head_steer_txt_div">60</div>
+                        </div>
+                        <div style="width: 50%; height: 100%; float: left; position: relative">
+                            <div id="steer_div"></div>
+                            <!--<img id="steer_img" th:src="@{/img/steer.png}">-->
+                            <div id="steer_img"></div>
+                            <div class="heading_title_div">方向盘：</div>
+                            <div id="steer_number" class="head_steer_txt_div">135</div>
+                        </div>
+                    </div>
+                    <div id="singleCarShowBox" style="position: relative; width: 100%; height: 50%;">
+                        <div id="panelChartParentDiv" style="position: relative;float: left; width: 50%; height: 100%;">
+                            <!--显示车仪表盘-->
+                            <div id="panelChartDiv" style="width: 100%;height: 100%"></div>
+                            <div id="connectServer"
+                                 style="position: absolute; border-radius: 50%; top: 15px; left: 10px; height: 20px; width: 20px;"></div>
+                            <div style="position: absolute; width: 100%; bottom: 10%">
+                                <div style="display: flex;width: 100%; padding-left: 15%;align-items: center">
+                                    <div style="text-align: center; color: #00e6ff;font-size: x-large">网联：</div>
+                                    <div id="netConnectLight"
+                                         style="float: left; height: 25px; width: 50px; background-color: #3d3d3d"></div>
+                                </div>
+                                <div style="display: flex; width: 100%; padding-left: 15%;align-items: center">
+                                    <div style="text-align: center; color: #00e6ff;font-size: x-large">状态：</div>
+                                    <div id="carOnlineLight"
+                                         style="float: left; height: 25px; width: 50px; background-color: #3d3d3d"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="singleCarStatus"
+                             style="float: left; width: 50%; height: 100%; padding: 5%; position: relative">
+                            <div style="width: 100%; padding-bottom: 100%; margin-top: 30%;">
+                                <table style="width:100%;">
+                                    <tr>
+                                        <td>
+                                            <div class="status_light"></div>
+                                        </td>
+                                        <td>
+                                            <div class="status_light"></div>
+                                        </td>
+                                        <td>
+                                            <div class="status_light"></div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="status_txt">GPS</div>
+                                        </td>
+                                        <td>
+                                            <div class="status_txt">Camera</div>
+                                        </td>
+                                        <td>
+                                            <div class="status_txt">LiDar</div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="status_light"></div>
+                                        </td>
+                                        <td>
+                                            <div class="status_light"></div>
+                                        </td>
+                                        <td>
+                                            <div class="status_light"></div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="status_txt">CAN</div>
+                                        </td>
+                                        <td>
+                                            <div class="status_txt">Radar</div>
+                                        </td>
+                                        <td>
+                                            <div class="status_txt">DState</div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div style="position: absolute; width: 100%; bottom: 10%">
+                                <div style="width: 100%; text-align: center; color: #00e6ff;font-size: x-large">当前车:
+                                </div>
+                                <div id="carName"
+                                     style="width: 100%; text-align: center; color: #ffffff;font-size: xx-large">（未选择）
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--两个video-->
+                <div style="width: 50%; height: 100%; float: left">
+                    <div id="frontDiv"
+                         style="width: 100%; height: 50%; background-color: #000000; border-bottom: solid 2px #4f558b; padding: 5% 0">
+                        <!--正前方-->
+                        <video id="frontVideo" style="width: 100%; height: 100%" poster="" muted playsInline
+                               webkit-playsinline autoplay>
+                            <source id="videoSource1" src="" type="rtmp/flv"/>
+                        </video>
+                    </div>
+                    <div id="driverDiv" style="width: 100%; height: 50%; background-color: #000000; padding: 5% 0">
+                        <video id="driverVideo" style="width: 100%; height: 100%" poster="" muted playsInline
+                               webkit-playsinline autoplay>
+                            <!--驾驶位-->
+                            <source id="videoSource" src="" type="rtmp/flv"/>
+                        </video>
+                    </div>
+                </div>
+            </div>
+            <div class="boxShadow" style="width: 100%; height: 18%; margin-top: 1%">
+                <div id="carParamsStatisticsDiv" style="width: 100%; height: 100%"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>

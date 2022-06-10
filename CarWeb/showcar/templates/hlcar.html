@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="apple-touch-icon" sizes="76x76" href="/static/img/Macau.png">
+    <link rel="icon" type="image/png" href="/static/img/Macau.png">
+    <title>澳门大学智能驾驶控制平台</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <!--<meta name="renderer" content="webkit">-->
+    <meta name="viewport" content="width=device-width, height=device-height,
+     initial-scale=1, minimum-scale=1.0, user-scalable=no">
+    <link href="/static/assert/css/index.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/static/bus/css/hailiang01/pageShow.css" th:href="@{/static/bus/css/hailiang01/pageShow.css}">
+    <link rel="stylesheet" href="/static/bus/css/bootstrap.min.css" th:href="@{/static/bus/css/bootstrap.min.css}">
+    <script type="text/javascript" src="/static/bus/js/jquery/jquery-3.3.1.min.js"
+            th:src="@{/static/bus/js/jquery/jquery-3.3.1.min.js}"></script>
+    <!-- <script type="text/javascript" src="/static/busss/js/verifyPage.js" th:src="@{/static/bus/js/verifyPage.js}"></script> -->
+
+    <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+
+</head>
+<body>
+<div style="width: 100%; height: 100%; background-color: #1f212b;">
+    <div class="container-fluid">
+        <div class="col-md-12 headPart">
+            <!--108dd1-->
+            <div id="titleH" style="position: relative">
+                <img style="position: absolute; float: left; height: 100px; left: 0; z-index: 99"
+                src="/static/img/Macau1-logo.png">
+                <div id="divh1">澳门大学智能驾驶车辆控制平台</div>
+            </div>
+
+            <div id="divh2">UM Intelligent Driving Vehicle Control Center</div>
+        </div>
+        {% block main %}
+        {% for car_static in car_obj_static %}
+        <div class="col-md-6 brotherPart">
+            <div id="titleTopDiv" style="position: absolute; top: 0; z-index: 30; width: 100%;">
+                
+            </div>
+            <div id="mapDiv" class="boxShadow" style="position: relative; width: 100%; height: 70%;">
+            
+                <!-- <object type='application/x-vlc-plugin' id='vlc' events='True'
+                classid='clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921' codebase="http://downloads.videolan.org/pub/videolan/vlc/latest/win32/axvlc.cab" width="720" height="540">
+                    <param name='mrl' value='rtsp://192.168.43.126:554/user=admin&password=QIANSHENG1234&channel=1&stream=0.sdp?real_stream' />
+                    <param name='volume' value='50' />
+                    <param name='autoplay' value='true' />
+                    <param name='loop' value='false' />
+                    <param name='fullscreen' value='false' />
+                </object> -->
+
+
+
+                    <!-- <video src="http://localhost:8080/stream" type="video/ogg" controls="controls" style="width: 100%; height: 100%;" >  -->
+                    <video src="/static/new/video/mo.mp4" controls="controls" style="width: 100%; height: 100%;" > 
+                    </video>
+            </div>
+            <div style="width: 100%; height: 28%; margin-top: 1%;">
+                <div id="totalDiv1" class="boxShadow" style="width:33%; height: 100%; float: left; margin-right: 1%">
+                    <div class="baseInfo" style="width: 100%;">
+                        <p class="infoTitle">TEST SITE</p>
+                        <p class="area">小车测试信息</p>
+                        <p class="infoTitle">
+                            TEST DATE
+                            <span class="date">2022-3-09</span>
+                        </p>
+                        <p class="infoTitle">
+                            SITE ID
+                            <span class="idNum">{{car_static.hmsms}}</span>
+                        </p>
+                        <p class="infoTitle">
+                            <span class="infoTitle" style="display: inline-block;margin-right: 40px;">TESTING<br>TIME</span>
+                            <span class="infoTitle">10</span>
+                            <span class="infoTitle">DAY</span>
+                        </p>
+                        <p class="area">电量 {{car_static.energy}}</p>
+                    </div>
+                </div>
+                <div id="totalDiv2" class="boxShadow" style="width: 33%; height: 100%; float: left;margin-right: 1%">
+                    
+                    <p class="area">转 向 角</p>
+                    <div id="main1" style="float: left;width: 300px;height:250px;"></div>
+
+
+                </div>
+                <div id="totalDiv3" class="boxShadow" style="width: 32%; height: 100%; float: left">
+                    
+                    <p class="area">车     速</p>
+                    <div id="main" style="width: 300px;height:250px;"></div>
+
+
+                </div>
+
+            </div>
+        </div>
+        <div class="col-md-6 brotherPart">
+            <div class="boxShadow" style="width: 100%; height: 50%; margin-bottom: 0">
+               
+                <div class="air-title title numfont">外置装置运行状态</div>
+                <div class="windData">
+                    <div class="windSpeed">
+                        <div class="windTitle numfont">红外装置状态</div>
+                        <div class="windBox">
+                            <div style="width: 33%;margin-left: 4%;">
+                                <p>InFraRed1</p>
+                                <p><span class="currentSpeed" id="nowWind">Yes</span>-> {{car_static.infrared1}}</p>
+                                <p>InFraRed2</p>
+                                <p><span class="currentSpeed" id="nowWind">Yes</span>->  {{car_static.infrared2}}</p>
+                            </div>
+                            <div style="width: 33%;">
+                                <p>InFraRed3</p>
+                                <p><span class="highestSpeed" id="highWind">Yes</span>->  {{car_static.infrared3}}</p>
+                                <p>InFraRed4</p>
+                                <p><span class="highestSpeed" id="highWind">Yes</span>->  {{car_static.infrared4}}</p>
+                            </div>
+                            <div style="width: 30%">
+                                <div class="windWrap">
+                                    <img src="/static/assert/img/wind1.png" class="windFan">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="gust">
+                        <div class="windTitle numfont">红外装置状态</div>
+                        <div class="windBox">
+                            <div style="width: 33%;margin-left: 4%;">
+                                <p>InFraRed5</p>
+                                <p><span class="currentSpeed" id="nowGust">Yes</span>->  {{car_static.infrared5}}</p>
+                                <p>InFraRed6</p>
+                                <p><span class="highestSpeed" id="highWind">Yes</span>->  {{car_static.infrared6}}</p>
+                            </div>
+                            <div style="width: 33%;">
+                   
+                            </div>
+                            <div style="width: 30%">
+                                <div class="windWrap">
+                                    <img src="/static/assert/img/wind1.png" class="windFan">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="windData">
+                    <div class="windSpeed">
+                        <div class="windTitle numfont">陀螺仪九轴状态</div>
+                        <div class="windBox">
+                            <div style="width: 33%;margin-left: 4%;">
+                                <p>jiuzhou1</p>
+                                <p><span class="currentSpeed" id="nowWind">{{car_static.jiuzhou1}}</span></p>
+                                <p>jiuzhou2&9</p>
+                                <p><span class="currentSpeed" id="nowWind">{{car_static.jiuzhou2}}</span></p>
+                            </div>
+                            <div style="width: 33%;">
+                                <p>jiuzhou3</p>
+                                <p><span class="currentSpeed" id="nowWind">{{car_static.jiuzhou3}}</span></p>
+                                <p>jiuzhou4</p>
+                                <p><span class="currentSpeed" id="nowWind">{{car_static.jiuzhou4}}</span></p>
+                            </div>
+                            <div style="width: 30%">
+                                <div class="windWrap">
+                                    <img src="/static/assert/img/wind1.png" class="windFan">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="gust">
+                        <div class="windTitle numfont">陀螺仪九轴状态</div>
+                        <div class="windBox">
+                            <div style="width: 33%;margin-left: 4%;">
+                                <p>jiuzhou5</p>
+                                <p><span class="currentSpeed" id="nowWind">{{car_static.jiuzhou5}}</span></p>
+                                <p>jiuzhou6</p>
+                                <p><span class="currentSpeed" id="nowWind">{{car_static.jiuzhou6}}</span></p>
+                            </div>
+                            <div style="width: 33%;">
+                                <p>jiuzhou7</p>
+                                <p><span class="currentSpeed" id="nowWind">{{car_static.jiuzhou7}}</span></p>
+                                <p>jiuzhou8</p>
+                                <p><span class="currentSpeed" id="nowWind">{{car_static.jiuzhou8}}</span></p>
+                            </div>
+                            <div style="width: 30%">
+                                <div class="windWrap">
+                                    <img src="/static/assert/img/wind1.png" class="windFan">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="rainfall">
+                    
+                </div>
+
+            </div>
+            <div class="boxShadow" style="width: 100%; height: 49%;">
+            
+                <div id="container"  style="width: 100%; height: 100%;"></div>
+
+
+               
+            </div>
+        </div>
+        {% endfor %}
+        {% endblock %}
+    </div>
+</div>
+<!--萤石js函数-->
+<!-- <script type="text/javascript" src="https://open.ys7.com/sdk/js/1.3/ezuikit.js"></script> -->
+<!--高德地图API-->
+<!-- <script src="http://webapi.amap.com/maps?v=1.4.5&key=370fed03f1c278a9e6b56ca782d8c5d2"></script> -->
+<!--<script type="text/javascript" src="/js/echarts-2.2.7/build/dist/echarts.min.js"-->
+        <!--th:src="@{/js/echarts-2.2.7/build/dist/echarts.min.js}"></script>-->
+<!-- <script type="text/javascript" src="/static/bus/js/echarts-2.2.7/echarts.min.js"
+        th:src="@{/js/echarts-2.2.7/echarts.min.js}"></script>
+<script type="text/javascript" src="/static/bus/js/jquery/jQueryRotate.2.2.js" th:src="@{/static/bus/js/jquery/jQueryRotate.2.2.js}"></script> -->
+<!--<script type="text/javascript" src="js/chartsOption.js"></script>-->
+<!-- <script type="text/javascript" src="/static/bus/js/ajaxSetUp.js" th:src="@{/static/bus/js/ajaxSetUp.js}"></script>
+<script type="text/javascript" src="/static/bus/js/errorExecuteBack.js" th:src="@{/static/bus/js/errorExecuteBack.js}"></script>
+
+<script type="text/javascript" src="/static/bus/js/ConstantsDataPool.js" th:src="@{/static/bus/js/ConstantsDataPool.js}"></script>
+<script type="text/javascript" src="/static/bus/js/constants.js" th:src="@{/static/bus/js/constants.js}"></script>
+<script type="text/javascript" src="/static/bus/js/ChangeLatLonUtil.js" th:src="@{/static/bus/js/ChangeLatLonUtil.js}"></script>
+<script type="text/javascript" src="/static/bus/js/hashMapUtil.js" th:src="@{/static/bus/js/hashMapUtil.js}"></script>
+<script type="text/javascript" src="/static/bus/js/hailiang01/echartsOption.js"
+        th:src="@{/js/hailiang01/echartsOption.js}"></script>
+<script type="text/javascript" src="/static/bus/js/hailiang01/echartsShowLoad.js"
+        th:src="@{/js/hailiang01/echartsShowLoad.js}"></script> -->
+
+<!--picture video prepare-->
+<!-- <script type="text/javascript" src="/static/bus/js/hailiang01/aMapLoad.js" th:src="@{/static/bus/js/hailiang01/aMapLoad.js}"></script>
+
+<script type="text/javascript" src="/static/bus/js/hailiang01/UIUpdate.js" th:src="@{/static/bus/js/hailiang01/UIUpdate.js}"></script>
+<script type="text/javascript" src="/static/bus/js/hailiang01/dataRequest.js" th:src="@{/static/bus/js/hailiang01/dataRequest.js}"></script>
+<script type="text/javascript" src="/static/bus/js/hailiang01/videoPlay.js" th:src="@{/static/bus/js/hailiang01/videoPlay.js}"></script> -->
+
+<!---->
+<script type="text/javascript">
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('main'));
+
+    // 指定图表的配置项和数据
+    var option = {
+    series: [
+        {
+        type: 'gauge',
+        progress: {
+            show: true,
+            width: 18
+        },
+        axisLine: {
+            lineStyle: {
+            width: 18
+            }
+        },
+        axisTick: {
+            show: false
+        },
+        splitLine: {
+            length: 15,
+            lineStyle: {
+            width: 2,
+            color: '#999'
+            }
+        },
+        axisLabel: {
+            distance: 25,
+            color: '#999',
+            fontSize: 10
+        },
+        anchor: {
+            show: true,
+            showAbove: true,
+            size: 25,
+            itemStyle: {
+            borderWidth: 10
+            }
+        },
+        title: {
+            show: false
+        },
+        detail: {
+            valueAnimation: true,
+            fontSize: 40,
+            offsetCenter: [0, '70%']
+        },
+        data: [
+            {
+            value: 70
+            }
+        ]
+        }
+    ]
+    };
+
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+
+    var myChart1 = echarts.init(document.getElementById('main1'));
+
+    var option1 = {
+    tooltip: {
+        formatter: '{a} <br/>{b} : {c}%'
+    },
+    series: [
+        {
+        name: 'Pressure',
+        type: 'gauge',
+        progress: {
+            show: true
+        },
+        detail: {
+            valueAnimation: true,
+            fontSize: 20,
+            formatter: '{value}'
+        },
+        data: [
+            {
+            value: -210,
+            name: 'SteerAngle'
+            }
+        ]
+        }
+    ]
+    };
+
+    myChart1.setOption(option1);
+
+    var dom = document.getElementById("container");
+    var myChart2 = echarts.init(dom);
+    var app = {};
+
+    var option2;
+
+    $.get('/static/img/bg1.svg', function (svg) {
+    echarts.registerMap('ksia-ext-plan', { svg: svg });
+    option2 = {
+        tooltip: {},
+        geo: {
+        map: 'ksia-ext-plan',
+        roam: true,
+        layoutCenter: ['50%', '50%'],
+        layoutSize: '180%'
+        },
+        series: [
+        {
+            name: 'Route',
+            type: 'lines',
+            coordinateSystem: 'geo',
+            geoIndex: 0,
+            emphasis: {
+            label: {
+                show: false
+            }
+            },
+            polyline: true,
+            lineStyle: {
+            color: '#c46e54',
+            width: 0
+            },
+            effect: {
+            show: true,
+            period: 8,
+            color: '#a10000',
+            // constantSpeed: 80,
+            trailLength: 0,
+            symbolSize: [12, 30],
+            symbol:
+                'path://M87.1667 3.8333L80.5.5h-60l-6.6667 3.3333L.5 70.5v130l10 10h80l10 -10v-130zM15.5 190.5l15 -20h40l15 20zm75 -65l-15 5v35l15 15zm-80 0l15 5v35l-15 15zm65 0l15 -5v-40l-15 20zm-50 0l-15 -5v-40l15 20zm 65,-55 -15,25 c -15,-5 -35,-5 -50,0 l -15,-25 c 25,-15 55,-15 80,0 z'
+            },
+            z: 100,
+            data: [
+             {
+                effect: {
+                color: '#997405',
+                constantSpeed: 60,
+                delay: 0
+                },
+                coords: [
+                [61.5920703124999704, 621.66908482142856],
+                [61.0651450892857, 521.13364955357144],
+                [61.72844029017864, 421.13874162946433],
+                [61.1817745535716, 321.1532505580358],
+                [61.3734598214287,221.91196986607144],
+                [61.2317885044645,121.9895368303571],
+                [71.1503850446429, 101.1669921875],
+                [76,91],
+                [81,81],
+                [91,71],
+                [96,61],
+                [101,51],
+                [201,41],
+                [301,41],
+                [321,41],
+                [330,61],
+                [345,81],
+                [360,101],
+                [381,121],
+                [381,141],
+                [381,241],
+                [381,341],
+                [381,441],
+                [381,541],
+                [381,641],
+                [381,741],
+                [381,861],
+                [361,871],
+                [341,881],
+                [311,891],
+                [281,901],
+                [251,917],
+                [221,927],
+                [181,917],
+                [161,907],
+                [141,897],
+                [121,881],
+                [101,861],
+                [81,841],
+                [61,821],
+                [61,721],
+                [61.5920703124999704, 621.66908482142856],
+                ]
+            }
+            ]
+        }
+        ]
+    };
+    myChart2.setOption(option2);
+    });
+
+    if (option2 && typeof option2 === 'object') {
+        myChart2.setOption(option2);
+    }
+
+
+
+
+</script>
+
+
+</body>
+</html>

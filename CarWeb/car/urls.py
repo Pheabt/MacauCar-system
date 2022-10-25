@@ -31,6 +31,8 @@ urlpatterns = [
     path('test/',views.test),
     path('haicar/',views.haicar),
 
+    path('combine',views.combinecar),
+
 
 ]
 

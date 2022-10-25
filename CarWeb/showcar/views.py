@@ -39,3 +39,7 @@ def haicar(request):
     #car_list = models.ZnjCarcrossinfotbl20211216124301.objects.all()
     car_newest = models.ZnjCarstatustbl20211216135710.objects.raw('select * from znj_carstatustbl20211216135710 order by HMSMS desc limit 1')
     return render(request,"haicar.html",{"car_obj_newest":car_newest})
+
+def combinecar(request):
+    car_static = models.ZnjCarstatustbl20211216135710.objects.raw('select * from znj_carstatustbl20211216135710 order by HMSMS desc limit 1')
+    return render(request,"combine.html",{"car_obj_static":car_static})
